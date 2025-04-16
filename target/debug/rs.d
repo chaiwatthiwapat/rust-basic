@@ -1,0 +1,1 @@
+C:\Users\chaiw\rs\target\debug\rs.exe: C:\Users\chaiw\rs\src\dto\car.rs C:\Users\chaiw\rs\src\dto\mod.rs C:\Users\chaiw\rs\src\dto\person.rs C:\Users\chaiw\rs\src\error.rs C:\Users\chaiw\rs\src\main.rs
