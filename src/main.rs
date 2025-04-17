@@ -14,7 +14,7 @@ use my_trait::country::Country;
 use my_enum::{color::Colors, grade::Grade};
 
 fn main() {
-    use_enum();
+    calc();
 }
 
 fn num() {
@@ -158,6 +158,34 @@ fn use_trait() {
     println!("{}", p.country());
 }
 
+fn grade(score: i32) -> Grade {
+    let grade: String;
+    if score < 0 || score > 100 {
+        return Grade::Error(format!("Invalid score: {}", score))
+    }
+    else {
+        grade = "A".to_string();
+    }
+
+    Grade::Value(grade)
+}
+
+fn grade2(score: i32) -> Option<String> {
+    if score < 0 || score > 100 {
+        return None;
+    }
+
+    Some("A".to_string())
+}
+
+fn grade3(score: i32) -> Result<String, String> {
+    if score < 0 || score > 100 {
+        return Err("Invalid score".to_string());
+    }
+
+    Ok("A".to_string())
+}
+
 fn use_enum() {
     let x = Colors::Red;
     let color = match x {
@@ -174,15 +202,41 @@ fn use_enum() {
     };
 }
 
-fn grade(score: i32) -> Grade {
-    let grade: String;
-    if score < 0 || score > 100 {
-        return Grade::Error(format!("Invalid score: {}", score))
+fn use_option() {
+    let x = grade2(100);
+    match x {
+        Some(v) => println!("{}", v),
+        None => println!("Invalid score")
     }
-    else {
-        grade = "A".to_string();
-    }
-
-    Grade::Value(grade)
 }
 
+fn use_result() {
+    let x = grade3(100);
+    match x {
+        Ok(v) => println!("{}", v),
+        Err(e) => println!("{}", e)
+    }
+}
+
+// Rust
+fn calc() {
+    let x = fn_x(10, 20, |a, b| a + b);
+    let y = fn_y(10, 20, |a, b| a * b);
+
+    println!("x: {}\ny: {}", x, y);
+}
+
+fn fn_x<F: Fn(i32, i32) -> i32>(a: i32, b: i32, f:F) -> i32 {
+    f(a, b) + a - b
+}
+
+fn fn_y<F>(a: i32, b: i32, f:F) -> i32 
+where F: Fn(i32, i32) -> i32 {
+    f(a, b) + a * b
+}
+
+// answer ?
+// A. x = 30, y = 200
+// B. x = 230, y = 230
+// C. x = 20, y = 400
+// D. x = 60, y = 300
