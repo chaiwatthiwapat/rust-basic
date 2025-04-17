@@ -1,16 +1,20 @@
 #![allow(dead_code)]
 #![allow(while_true)]
+#![allow(unused_imports)]
 
-mod dto;
 mod error;
+mod my_struct;
+mod my_trait;
+mod my_enum;
 
 use std::collections::HashMap;
-use dto::person::Person;
-use dto::car::Car;
-use crate::error::print_error;
+use error::print_error;
+use my_struct::{person::Person, car::Car};
+use my_trait::country::Country;
+use my_enum::{color::Colors, grade::Grade};
 
 fn main() {
-    print_error();
+    use_enum();
 }
 
 fn num() {
@@ -123,6 +127,8 @@ fn collect() {
 }
 
 fn use_hashmap() {
+    // use std::collections::HashMap;
+
     let mut x: HashMap<&str, &str> = HashMap::new();
     x.insert("th", "Thailand");
     x.insert("us", "United state");
@@ -141,5 +147,42 @@ fn use_struct() {
 
     println!("person name: {} \n{:#?}", p.name, p);
     println!("car name: {} \n{:#?}", c.name(), c);
+}
+
+fn use_trait() {
+    let p = Person {
+        name: "Chaiwat".to_string(),
+        age: 22
+    };
+
+    println!("{}", p.country());
+}
+
+fn use_enum() {
+    let x = Colors::Red;
+    let color = match x {
+        Colors::Red => "Red",
+        _ => "White"
+    };
+    let color = format!("color is: {}", color);
+    println!("{}", color);
+
+    let grade = grade(80);
+    match grade {
+        Grade::Error(e) => println!("{}", e),
+        Grade::Value(g) => println!("{}", g)
+    };
+}
+
+fn grade(score: i32) -> Grade {
+    let grade: String;
+    if score < 0 || score > 100 {
+        return Grade::Error(format!("Invalid score: {}", score))
+    }
+    else {
+        grade = "A".to_string();
+    }
+
+    Grade::Value(grade)
 }
 
